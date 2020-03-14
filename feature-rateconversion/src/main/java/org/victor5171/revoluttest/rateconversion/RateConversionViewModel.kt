@@ -1,20 +1,24 @@
 package org.victor5171.revoluttest.rateconversion
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.victor5171.revoluttest.repository.DispatchersContainer
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
-import java.util.Timer
-import kotlin.concurrent.fixedRateTimer
 
 private const val CURRENCY_UPDATE_RATE_IN_MILLISECONDS = 1000L
+private const val DEFAULT_BASE_CURRENCY = "EUR"
+private const val DEFAULT_STARTING_VALUE = 1.0f
 
 class RateConversionViewModel(
     private val rateConversionRepository: RateConversionRepository,
@@ -22,12 +26,17 @@ class RateConversionViewModel(
 ) : ViewModel() {
     //Create a empty MutableLiveData, just to avoid working with nullable values
     private var currentSource: LiveData<List<ConvertedRate>> = MutableLiveData()
+    private var currentBaseCurrency: String? = null
 
     private val ratesMediatorLiveData = MediatorLiveData<List<ConvertedRate>>()
 
-    private lateinit var ratesUpdateTimer: Timer
+    private var ratesUpdateJob: Job? = null
 
     val rates: LiveData<List<ConvertedRate>> = ratesMediatorLiveData
+
+    init {
+        convert(DEFAULT_BASE_CURRENCY, DEFAULT_STARTING_VALUE)
+    }
 
     fun convert(baseCurrency: String, value: Float) {
         ratesMediatorLiveData.removeSource(currentSource)
@@ -35,13 +44,19 @@ class RateConversionViewModel(
         currentSource = createCurrencyConversionSource(baseCurrency, value)
 
         ratesMediatorLiveData.addSource(currentSource) {
-            ratesMediatorLiveData.value = it
+            if (ratesMediatorLiveData.value != it) {
+                ratesMediatorLiveData.value = it
+            }
         }
 
         loadRates(baseCurrency)
 
-        cancelUpdateTimer()
-        startUpdateTimer(baseCurrency)
+        if (currentBaseCurrency != baseCurrency) {
+            currentBaseCurrency = baseCurrency
+
+            cancelUpdateTimer()
+            startUpdateTimer(baseCurrency)
+        }
     }
 
     private fun convertCurrencyValue(value: Float, multiplier: Float) = value * multiplier
@@ -75,14 +90,24 @@ class RateConversionViewModel(
     }
 
     private fun startUpdateTimer(baseCurrency: String) {
-        ratesUpdateTimer = fixedRateTimer(period = CURRENCY_UPDATE_RATE_IN_MILLISECONDS) {
-            loadRates(baseCurrency)
+        ratesUpdateJob = viewModelScope.launch {
+            while (isActive) {
+                delay(CURRENCY_UPDATE_RATE_IN_MILLISECONDS)
+                if (isActive) {
+                    loadRates(baseCurrency)
+                }
+            }
         }
     }
 
-    private fun cancelUpdateTimer() = ratesUpdateTimer.cancel()
+    private fun cancelUpdateTimer() = ratesUpdateJob?.cancel()
 
     override fun onCleared() {
         cancelUpdateTimer()
+    }
+
+    @VisibleForTesting
+    fun close() {
+        onCleared()
     }
 }
