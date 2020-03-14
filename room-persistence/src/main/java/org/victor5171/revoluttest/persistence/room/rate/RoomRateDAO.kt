@@ -14,9 +14,9 @@ internal abstract class RoomRateDAO : RateDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     protected abstract suspend fun updateRates(roomRates: List<RoomRateDTO>)
 
-    override suspend fun updateRates(baseCurrency: String, roomRates: List<RateDTO>) {
+    override suspend fun updateRates(baseCurrency: String, rates: List<RateDTO>) {
         val roomRateDTOs =
-            roomRates.map { RoomRateDTO(baseCurrency, it.destinationCurrency, it.multiplier) }
+            rates.map { RoomRateDTO(baseCurrency, it.destinationCurrency, it.multiplier) }
 
         updateRates(roomRateDTOs)
     }

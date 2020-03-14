@@ -26,4 +26,5 @@ ext {
     espressoCoreVersion = "3.2.0"
     coreTestVersion = "1.2.0"
     robolectricVersion = "4.3.1"
+    mockkVersion = "1.9.3"
 }
