@@ -1,0 +1,5 @@
+rootProject.name='RevolutTest'
+include ':app'
+include ':api'
+include ':retrofit-api'
+include ':room-persistence'
