@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 
-class ApiBuilder(baseUrl: String) {
+internal class ApiBuilder(baseUrl: String) {
     private val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(MoshiConverterFactory.create())

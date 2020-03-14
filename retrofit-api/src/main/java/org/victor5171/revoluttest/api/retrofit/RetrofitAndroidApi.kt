@@ -3,7 +3,7 @@ package org.victor5171.revoluttest.api.retrofit
 import org.victor5171.revoluttest.api.AndroidApi
 import org.victor5171.revoluttest.api.LatestRatesResponse
 
-class RetrofitAndroidApi internal constructor(
+internal class RetrofitAndroidApi internal constructor(
     private val androidRetrofitService: AndroidRetrofitService
 ) : AndroidApi {
 

@@ -10,7 +10,7 @@ import androidx.room.Entity
         "destinationCurrency"
     ]
 )
-data class RateDTO(
+internal data class RoomRateDTO(
     @ColumnInfo(name = "baseCurrency")
     val baseCurrency: String,
 
