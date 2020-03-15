@@ -40,6 +40,7 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$archVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     testImplementation "io.mockk:mockk:$mockkVersion"
+    testImplementation "com.jraska.livedata:testing-ktx:$liveDataTestingVersion"
 
     androidTestImplementation "androidx.test.ext:junit:$junitExtensionVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"

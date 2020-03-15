@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import org.junit.Rule
 import org.junit.Test
+import org.victor5171.revoluttest.TestDispatchersContainer
 import org.victor5171.revoluttest.repository.DispatchersContainer
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
 
@@ -31,10 +32,7 @@ class RateConversionViewModelScheduleTest {
 
         val testCoroutineDispatcher = TestCoroutineDispatcher()
 
-        val dispatchersContainer = object : DispatchersContainer {
-            override val io = testCoroutineDispatcher
-            override val main = testCoroutineDispatcher
-        }
+        val dispatchersContainer = TestDispatchersContainer(testCoroutineDispatcher)
 
         Dispatchers.setMain(testCoroutineDispatcher)
 
@@ -57,10 +55,7 @@ class RateConversionViewModelScheduleTest {
 
         val testCoroutineDispatcher = TestCoroutineDispatcher()
 
-        val dispatchersContainer = object : DispatchersContainer {
-            override val io = testCoroutineDispatcher
-            override val main = testCoroutineDispatcher
-        }
+        val dispatchersContainer = TestDispatchersContainer(testCoroutineDispatcher)
 
         Dispatchers.setMain(testCoroutineDispatcher)
 

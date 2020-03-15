@@ -28,4 +28,5 @@ ext {
     coreTestVersion = "1.2.0"
     robolectricVersion = "4.3.1"
     mockkVersion = "1.9.3"
+    liveDataTestingVersion = "1.1.1"
 }
