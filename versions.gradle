@@ -20,6 +20,7 @@ ext {
     roomVersion = "2.2.4"
     lifecycleVersion = "2.2.0"
     archVersion = "2.1.0"
+    injectVersion = "1"
 
     //Test Libraries versions
     junit4Version = "4.13"

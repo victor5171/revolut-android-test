@@ -5,8 +5,11 @@ import kotlinx.coroutines.flow.map
 import org.victor5171.revoluttest.api.AndroidApi
 import org.victor5171.revoluttest.persistence.rate.RateDAO
 import org.victor5171.revoluttest.persistence.rate.RateDTO
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RateConversionRepository(
+@Singleton
+class RateConversionRepository @Inject constructor(
     private val rateDAO: RateDAO,
     private val androidApi: AndroidApi
 ) {
