@@ -3,17 +3,21 @@ package org.victor5171.revoluttest.app.di
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 import org.victor5171.revoluttest.api.retrofit.RetrofitApiModule
 import org.victor5171.revoluttest.api.retrofit.di.BaseUrl
 import org.victor5171.revoluttest.app.MainActivity
 import org.victor5171.revoluttest.persistence.room.di.RoomPersistenceModule
-import javax.inject.Singleton
+import org.victor5171.revoluttest.rateconversion.di.FeatureRateConversionModule
 
 @Singleton
 @Component(
     modules = [
+        ViewModelFactoryModule::class,
         RoomPersistenceModule::class,
-        RetrofitApiModule::class
+        RetrofitApiModule::class,
+        FeatureRateConversionModule::class,
+        DispatchersContainerModule::class
     ]
 )
 interface AppComponent {

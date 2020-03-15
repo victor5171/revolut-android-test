@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 import org.victor5171.revoluttest.persistence.rate.RateDAO
 import org.victor5171.revoluttest.persistence.room.AppDatabase
-import javax.inject.Singleton
 
 private const val APP_DATABASE_FILE_NAME = "appDatabase"
 

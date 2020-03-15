@@ -87,9 +87,9 @@ class RateConversionViewModelRatesTest {
         testCoroutineDispatcher.advanceTimeBy(5000L)
 
         ratesTestObserver.assertValue {
-            it.size == 2
-                && it.contains(ConvertedRate(baseCurrency, 1.0f))
-                && it.contains(ConvertedRate("USD", 0.9f))
+            it.size == 2 &&
+                it.contains(ConvertedRate(baseCurrency, 1.0f)) &&
+                it.contains(ConvertedRate("USD", 0.9f))
         }
     }
 
@@ -128,12 +128,12 @@ class RateConversionViewModelRatesTest {
             Rate("USD", 0.9f)
         ))
 
-        //The LiveData should maintain the same value as before
+        // The LiveData should maintain the same value as before
         ratesTestObserver.assertValue {
             it.size == 1 && it.contains(ConvertedRate(dolarCurrency, 1.0f))
         }
 
-        //Asserting the history of values
+        // Asserting the history of values
         ratesTestObserver.assertValueHistory(
             listOf(ConvertedRate(baseCurrency, 1.0f)),
             listOf(ConvertedRate(dolarCurrency, 1.0f))
@@ -160,30 +160,30 @@ class RateConversionViewModelRatesTest {
         val ratesTestObserver = viewModel.rates.test()
 
         ratesTestObserver.assertValue {
-            it.size == 2
-                && it.contains(ConvertedRate(baseCurrency, 1.0f))
-                && it.contains(ConvertedRate("USD", 0.9f))
+            it.size == 2 &&
+                it.contains(ConvertedRate(baseCurrency, 1.0f)) &&
+                it.contains(ConvertedRate("USD", 0.9f))
         }
 
         viewModel.convert(baseCurrency, 2.0f)
 
-        //Using the same rates, but checking if the converted values were updated
+        // Using the same rates, but checking if the converted values were updated
         ratesTestObserver.assertValue {
-            it.size == 2
-                && it.contains(ConvertedRate(baseCurrency, 2.0f))
-                && it.contains(ConvertedRate("USD", 1.8f))
+            it.size == 2 &&
+                it.contains(ConvertedRate(baseCurrency, 2.0f)) &&
+                it.contains(ConvertedRate("USD", 1.8f))
         }
 
-        //Updating the rates
+        // Updating the rates
         channelForBaseCurrency.sendBlocking(listOf(
             Rate("USD", 0.8f)
         ))
 
-        //Using the same rates, but checking if the converted values were updated
+        // Using the same rates, but checking if the converted values were updated
         ratesTestObserver.assertValue {
-            it.size == 2
-                && it.contains(ConvertedRate(baseCurrency, 2.0f))
-                && it.contains(ConvertedRate("USD", 1.6f))
+            it.size == 2 &&
+                it.contains(ConvertedRate(baseCurrency, 2.0f)) &&
+                it.contains(ConvertedRate("USD", 1.6f))
         }
 
         ratesTestObserver.assertValueHistory(

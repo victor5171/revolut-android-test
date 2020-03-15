@@ -2,9 +2,9 @@ package org.victor5171.revoluttest.api.retrofit
 
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 import org.victor5171.revoluttest.api.AndroidApi
 import org.victor5171.revoluttest.api.retrofit.di.BaseUrl
-import javax.inject.Singleton
 
 @Module
 class RetrofitApiModule {

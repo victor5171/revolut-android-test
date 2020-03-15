@@ -3,6 +3,7 @@ apply from: "../versions.gradle"
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion project.compileSdkVersion
@@ -28,6 +29,7 @@ android {
 }
 
 dependencies {
+    implementation project(":viewmodel-extensions")
     implementation project(":repository")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
@@ -35,6 +37,9 @@ dependencies {
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
     testImplementation "junit:junit:$junit4Version"
     testImplementation "androidx.arch.core:core-testing:$archVersion"

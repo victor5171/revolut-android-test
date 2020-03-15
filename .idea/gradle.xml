@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/repository" />
             <option value="$PROJECT_DIR$/retrofit-api" />
             <option value="$PROJECT_DIR$/room-persistence" />
+            <option value="$PROJECT_DIR$/viewmodel-extensions" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

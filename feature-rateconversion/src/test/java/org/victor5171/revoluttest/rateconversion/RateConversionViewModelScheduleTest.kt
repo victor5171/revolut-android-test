@@ -63,22 +63,22 @@ class RateConversionViewModelScheduleTest {
 
         coVerify(exactly = 1) { repository.loadRates(euroCurrency) }
 
-        //Wait a small amount of time, not enough to update the rates
+        // Wait a small amount of time, not enough to update the rates
         testCoroutineDispatcher.advanceTimeBy(500L)
 
         coVerify(exactly = 1) { repository.loadRates(euroCurrency) }
 
-        //Change to a new currency, should reset the timer
+        // Change to a new currency, should reset the timer
         viewModel.convert(dolarCurrency, 1f)
 
-        //Wait a small amount of time, not enough to update the rates
+        // Wait a small amount of time, not enough to update the rates
         testCoroutineDispatcher.advanceTimeBy(500L)
 
-        //No timer should be executed yet
+        // No timer should be executed yet
         coVerify(exactly = 1) { repository.loadRates(euroCurrency) }
         coVerify(exactly = 1) { repository.loadRates(dolarCurrency) }
 
-        //Wait more half a second, so the timer can update the newly set base currency
+        // Wait more half a second, so the timer can update the newly set base currency
         testCoroutineDispatcher.advanceTimeBy(500L)
 
         coVerify(exactly = 1) { repository.loadRates(euroCurrency) }

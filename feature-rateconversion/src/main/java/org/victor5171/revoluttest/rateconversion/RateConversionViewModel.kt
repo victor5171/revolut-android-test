@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
@@ -20,11 +21,11 @@ private const val CURRENCY_UPDATE_RATE_IN_MILLISECONDS = 1000L
 private const val DEFAULT_BASE_CURRENCY = "EUR"
 private const val DEFAULT_STARTING_VALUE = 1.0f
 
-class RateConversionViewModel(
+class RateConversionViewModel @Inject constructor(
     private val rateConversionRepository: RateConversionRepository,
     private val dispatchersContainer: DispatchersContainer
 ) : ViewModel() {
-    //Create a empty MutableLiveData, just to avoid working with nullable values
+    // Create a empty MutableLiveData, just to avoid working with nullable values
     private var currentSource: LiveData<List<ConvertedRate>> = MutableLiveData()
     private var currentBaseCurrency: String? = null
 

@@ -1,12 +1,12 @@
 package org.victor5171.revoluttest.repository.rateconversion
 
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.victor5171.revoluttest.api.AndroidApi
 import org.victor5171.revoluttest.persistence.rate.RateDAO
 import org.victor5171.revoluttest.persistence.rate.RateDTO
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 class RateConversionRepository @Inject constructor(
