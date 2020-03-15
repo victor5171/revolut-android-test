@@ -13,6 +13,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.Rule
 import org.junit.Test
 import org.victor5171.revoluttest.TestDispatchersContainer
+import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.revoluttest.repository.DispatchersContainer
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
 
@@ -36,7 +37,10 @@ class RateConversionViewModelScheduleTest {
 
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        RateConversionViewModel(repository, dispatchersContainer)
+        RateConversionViewModel(
+            repository,
+            dispatchersContainer
+        )
 
         testCoroutineDispatcher.advanceTimeBy(5000L)
 
@@ -59,7 +63,11 @@ class RateConversionViewModelScheduleTest {
 
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        val viewModel = RateConversionViewModel(repository, dispatchersContainer)
+        val viewModel =
+            RateConversionViewModel(
+                repository,
+                dispatchersContainer
+            )
 
         coVerify(exactly = 1) { repository.loadRates(euroCurrency) }
 
@@ -103,7 +111,11 @@ class RateConversionViewModelScheduleTest {
 
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        val viewModel = RateConversionViewModel(repository, dispatchersContainer)
+        val viewModel =
+            RateConversionViewModel(
+                repository,
+                dispatchersContainer
+            )
 
         testCoroutineDispatcher.advanceTimeBy(500L)
 
@@ -136,7 +148,11 @@ class RateConversionViewModelScheduleTest {
 
         Dispatchers.setMain(testCoroutineDispatcher)
 
-        val viewModel = RateConversionViewModel(repository, dispatchersContainer)
+        val viewModel =
+            RateConversionViewModel(
+                repository,
+                dispatchersContainer
+            )
 
         coVerify(exactly = 1) { repository.loadRates(baseCurrency) }
 

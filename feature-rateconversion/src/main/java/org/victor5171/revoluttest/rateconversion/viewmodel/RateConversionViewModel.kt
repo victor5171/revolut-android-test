@@ -1,4 +1,4 @@
-package org.victor5171.revoluttest.rateconversion
+package org.victor5171.revoluttest.rateconversion.viewmodel
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -36,7 +36,10 @@ class RateConversionViewModel @Inject constructor(
     val rates: LiveData<List<ConvertedRate>> = ratesMediatorLiveData
 
     init {
-        convert(DEFAULT_BASE_CURRENCY, DEFAULT_STARTING_VALUE)
+        convert(
+            DEFAULT_BASE_CURRENCY,
+            DEFAULT_STARTING_VALUE
+        )
     }
 
     fun convert(baseCurrency: String, value: Float) {
@@ -68,7 +71,11 @@ class RateConversionViewModel @Inject constructor(
     ): LiveData<List<ConvertedRate>> {
         return rateConversionRepository.getRatesByAscOrdering(baseCurrency)
             .map { rates ->
-                val baseConvertedCurrency = ConvertedRate(baseCurrency, value)
+                val baseConvertedCurrency =
+                    ConvertedRate(
+                        baseCurrency,
+                        value
+                    )
 
                 val convertedRates = rates.map {
                     ConvertedRate(

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import org.victor5171.revoluttest.rateconversion.RateConversionViewModel
+import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.viewmodelextensions.viewmodelfactory.ViewModelKey
 
 @Module

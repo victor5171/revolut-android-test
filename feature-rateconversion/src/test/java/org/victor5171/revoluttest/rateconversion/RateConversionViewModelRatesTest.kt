@@ -23,6 +23,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.victor5171.revoluttest.TestDispatchersContainer
 import org.victor5171.revoluttest.UnconfinedTestDispatchersContainer
+import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
+import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.revoluttest.repository.rateconversion.Rate
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
 
@@ -47,10 +49,19 @@ class RateConversionViewModelRatesTest {
             coEvery { loadRates(baseCurrency) } returns Unit
         }
 
-        val viewModel = RateConversionViewModel(repository, UnconfinedTestDispatchersContainer)
+        val viewModel =
+            RateConversionViewModel(
+                repository,
+                UnconfinedTestDispatchersContainer
+            )
 
         viewModel.rates.test().assertValue {
-            it.size == 1 && it.contains(ConvertedRate(baseCurrency, 1.0f))
+            it.size == 1 && it.contains(
+                ConvertedRate(
+                    baseCurrency,
+                    1.0f
+                )
+            )
         }
     }
 
@@ -76,20 +87,38 @@ class RateConversionViewModelRatesTest {
         }
 
         val viewModel =
-            RateConversionViewModel(repository, TestDispatchersContainer(testCoroutineDispatcher))
+            RateConversionViewModel(
+                repository,
+                TestDispatchersContainer(testCoroutineDispatcher)
+            )
 
         val ratesTestObserver = viewModel.rates.test()
 
         ratesTestObserver.assertValue {
-            it.size == 1 && it.contains(ConvertedRate(baseCurrency, 1.0f))
+            it.size == 1 && it.contains(
+                ConvertedRate(
+                    baseCurrency,
+                    1.0f
+                )
+            )
         }
 
         testCoroutineDispatcher.advanceTimeBy(5000L)
 
         ratesTestObserver.assertValue {
             it.size == 2 &&
-                it.contains(ConvertedRate(baseCurrency, 1.0f)) &&
-                it.contains(ConvertedRate("USD", 0.9f))
+                it.contains(
+                    ConvertedRate(
+                        baseCurrency,
+                        1.0f
+                    )
+                ) &&
+                it.contains(
+                    ConvertedRate(
+                        "USD",
+                        0.9f
+                    )
+                )
         }
     }
 
@@ -106,20 +135,34 @@ class RateConversionViewModelRatesTest {
             coEvery { loadRates(or(baseCurrency, dolarCurrency)) } returns Unit
         }
 
-        val viewModel = RateConversionViewModel(repository, UnconfinedTestDispatchersContainer)
+        val viewModel =
+            RateConversionViewModel(
+                repository,
+                UnconfinedTestDispatchersContainer
+            )
 
         channelForBaseCurrency.sendBlocking(emptyList())
 
         val ratesTestObserver = viewModel.rates.test()
 
         ratesTestObserver.assertValue {
-            it.size == 1 && it.contains(ConvertedRate(baseCurrency, 1.0f))
+            it.size == 1 && it.contains(
+                ConvertedRate(
+                    baseCurrency,
+                    1.0f
+                )
+            )
         }
 
         viewModel.convert(dolarCurrency, 1.0f)
 
         ratesTestObserver.assertValue {
-            it.size == 1 && it.contains(ConvertedRate(dolarCurrency, 1.0f))
+            it.size == 1 && it.contains(
+                ConvertedRate(
+                    dolarCurrency,
+                    1.0f
+                )
+            )
         }
 
         // This should be ignored, because the view model is observing another source since the base
@@ -130,13 +173,28 @@ class RateConversionViewModelRatesTest {
 
         // The LiveData should maintain the same value as before
         ratesTestObserver.assertValue {
-            it.size == 1 && it.contains(ConvertedRate(dolarCurrency, 1.0f))
+            it.size == 1 && it.contains(
+                ConvertedRate(
+                    dolarCurrency,
+                    1.0f
+                )
+            )
         }
 
         // Asserting the history of values
         ratesTestObserver.assertValueHistory(
-            listOf(ConvertedRate(baseCurrency, 1.0f)),
-            listOf(ConvertedRate(dolarCurrency, 1.0f))
+            listOf(
+                ConvertedRate(
+                    baseCurrency,
+                    1.0f
+                )
+            ),
+            listOf(
+                ConvertedRate(
+                    dolarCurrency,
+                    1.0f
+                )
+            )
         )
     }
 
@@ -151,7 +209,11 @@ class RateConversionViewModelRatesTest {
             coEvery { loadRates(baseCurrency) } returns Unit
         }
 
-        val viewModel = RateConversionViewModel(repository, UnconfinedTestDispatchersContainer)
+        val viewModel =
+            RateConversionViewModel(
+                repository,
+                UnconfinedTestDispatchersContainer
+            )
 
         channelForBaseCurrency.sendBlocking(listOf(
             Rate("USD", 0.9f)
@@ -161,8 +223,18 @@ class RateConversionViewModelRatesTest {
 
         ratesTestObserver.assertValue {
             it.size == 2 &&
-                it.contains(ConvertedRate(baseCurrency, 1.0f)) &&
-                it.contains(ConvertedRate("USD", 0.9f))
+                it.contains(
+                    ConvertedRate(
+                        baseCurrency,
+                        1.0f
+                    )
+                ) &&
+                it.contains(
+                    ConvertedRate(
+                        "USD",
+                        0.9f
+                    )
+                )
         }
 
         viewModel.convert(baseCurrency, 2.0f)
@@ -170,8 +242,18 @@ class RateConversionViewModelRatesTest {
         // Using the same rates, but checking if the converted values were updated
         ratesTestObserver.assertValue {
             it.size == 2 &&
-                it.contains(ConvertedRate(baseCurrency, 2.0f)) &&
-                it.contains(ConvertedRate("USD", 1.8f))
+                it.contains(
+                    ConvertedRate(
+                        baseCurrency,
+                        2.0f
+                    )
+                ) &&
+                it.contains(
+                    ConvertedRate(
+                        "USD",
+                        1.8f
+                    )
+                )
         }
 
         // Updating the rates
@@ -182,14 +264,51 @@ class RateConversionViewModelRatesTest {
         // Using the same rates, but checking if the converted values were updated
         ratesTestObserver.assertValue {
             it.size == 2 &&
-                it.contains(ConvertedRate(baseCurrency, 2.0f)) &&
-                it.contains(ConvertedRate("USD", 1.6f))
+                it.contains(
+                    ConvertedRate(
+                        baseCurrency,
+                        2.0f
+                    )
+                ) &&
+                it.contains(
+                    ConvertedRate(
+                        "USD",
+                        1.6f
+                    )
+                )
         }
 
         ratesTestObserver.assertValueHistory(
-            listOf(ConvertedRate(baseCurrency, 1.0f), ConvertedRate("USD", 0.9f)),
-            listOf(ConvertedRate(baseCurrency, 2.0f), ConvertedRate("USD", 1.8f)),
-            listOf(ConvertedRate(baseCurrency, 2.0f), ConvertedRate("USD", 1.6f))
+            listOf(
+                ConvertedRate(
+                    baseCurrency,
+                    1.0f
+                ),
+                ConvertedRate(
+                    "USD",
+                    0.9f
+                )
+            ),
+            listOf(
+                ConvertedRate(
+                    baseCurrency,
+                    2.0f
+                ),
+                ConvertedRate(
+                    "USD",
+                    1.8f
+                )
+            ),
+            listOf(
+                ConvertedRate(
+                    baseCurrency,
+                    2.0f
+                ),
+                ConvertedRate(
+                    "USD",
+                    1.6f
+                )
+            )
         )
     }
 }

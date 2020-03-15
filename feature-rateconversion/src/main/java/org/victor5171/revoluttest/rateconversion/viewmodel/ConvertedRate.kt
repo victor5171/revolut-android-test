@@ -1,4 +1,4 @@
-package org.victor5171.revoluttest.rateconversion
+package org.victor5171.revoluttest.rateconversion.viewmodel
 
 data class ConvertedRate(
     val currency: String,
