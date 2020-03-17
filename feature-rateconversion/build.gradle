@@ -26,6 +26,15 @@ android {
         }
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -40,6 +49,23 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
 
+    //Include the missing JAXB that the Databinding framework requires
+    if (JavaVersion.current().ordinal() >= JavaVersion.VERSION_1_9.ordinal()) {
+        kapt "com.sun.xml.bind:jaxb-core:$jaxBCoreVersion"
+        kapt "javax.xml.bind:jaxb-api:$jaxBApiVersion"
+        kapt "com.sun.xml.bind:jaxb-impl:$jaxBImplVersion"
+
+        kaptTest "com.sun.xml.bind:jaxb-core:$jaxBCoreVersion"
+        kaptTest "javax.xml.bind:jaxb-api:$jaxBApiVersion"
+        kaptTest "com.sun.xml.bind:jaxb-impl:$jaxBImplVersion"
+
+        annotationProcessor "com.sun.xml.bind:jaxb-core:$jaxBCoreVersion"
+        annotationProcessor "javax.xml.bind:jaxb-api:$jaxBApiVersion"
+
+        testAnnotationProcessor "com.sun.xml.bind:jaxb-core:$jaxBCoreVersion"
+        testAnnotationProcessor "javax.xml.bind:jaxb-api:$jaxBApiVersion"
+    }
+
     implementation "com.google.dagger:dagger:$daggerVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -49,6 +75,8 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     testImplementation "io.mockk:mockk:$mockkVersion"
     testImplementation "com.jraska.livedata:testing-ktx:$liveDataTestingVersion"
+    testImplementation "androidx.test:core:$coreTestVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 
     androidTestImplementation "androidx.test.ext:junit:$junitExtensionVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"

@@ -16,6 +16,7 @@ import org.victor5171.revoluttest.TestDispatchersContainer
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.revoluttest.repository.DispatchersContainer
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
+import java.util.Locale
 
 @ExperimentalCoroutinesApi
 class RateConversionViewModelScheduleTest {
@@ -38,6 +39,7 @@ class RateConversionViewModelScheduleTest {
         Dispatchers.setMain(testCoroutineDispatcher)
 
         RateConversionViewModel(
+            Locale.getDefault(),
             repository,
             dispatchersContainer
         )
@@ -65,6 +67,7 @@ class RateConversionViewModelScheduleTest {
 
         val viewModel =
             RateConversionViewModel(
+                Locale.getDefault(),
                 repository,
                 dispatchersContainer
             )
@@ -113,6 +116,7 @@ class RateConversionViewModelScheduleTest {
 
         val viewModel =
             RateConversionViewModel(
+                Locale.getDefault(),
                 repository,
                 dispatchersContainer
             )
@@ -150,6 +154,7 @@ class RateConversionViewModelScheduleTest {
 
         val viewModel =
             RateConversionViewModel(
+                Locale.getDefault(),
                 repository,
                 dispatchersContainer
             )

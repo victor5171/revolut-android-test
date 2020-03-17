@@ -31,10 +31,13 @@ android {
         }
     }
 
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -53,6 +56,16 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+    //Include the missing JAXB that the Databinding framework requires
+    if (JavaVersion.current().ordinal() >= JavaVersion.VERSION_1_9.ordinal()) {
+        kapt "com.sun.xml.bind:jaxb-core:$jaxBCoreVersion"
+        kapt "javax.xml.bind:jaxb-api:$jaxBApiVersion"
+        kapt "com.sun.xml.bind:jaxb-impl:$jaxBImplVersion"
+
+        annotationProcessor "com.sun.xml.bind:jaxb-core:$jaxBCoreVersion"
+        annotationProcessor "javax.xml.bind:jaxb-api:$jaxBApiVersion"
+    }
 
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"

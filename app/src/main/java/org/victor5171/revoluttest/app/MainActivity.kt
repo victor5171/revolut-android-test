@@ -10,14 +10,7 @@ import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewMod
 
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModel: RateConversionViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        DaggerAppComponent.factory()
-            .create(application, BuildConfig.API_BASE_URL)
-            .inject(this)
-
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)

@@ -27,6 +27,7 @@ import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.revoluttest.repository.rateconversion.Rate
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
+import java.util.Locale
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -51,6 +52,7 @@ class RateConversionViewModelRatesTest {
 
         val viewModel =
             RateConversionViewModel(
+                Locale.getDefault(),
                 repository,
                 UnconfinedTestDispatchersContainer
             )
@@ -59,6 +61,7 @@ class RateConversionViewModelRatesTest {
             it.size == 1 && it.contains(
                 ConvertedRate(
                     baseCurrency,
+                    "Euro",
                     1.0f
                 )
             )
@@ -88,6 +91,7 @@ class RateConversionViewModelRatesTest {
 
         val viewModel =
             RateConversionViewModel(
+                Locale.getDefault(),
                 repository,
                 TestDispatchersContainer(testCoroutineDispatcher)
             )
@@ -98,6 +102,7 @@ class RateConversionViewModelRatesTest {
             it.size == 1 && it.contains(
                 ConvertedRate(
                     baseCurrency,
+                    "Euro",
                     1.0f
                 )
             )
@@ -110,12 +115,14 @@ class RateConversionViewModelRatesTest {
                 it.contains(
                     ConvertedRate(
                         baseCurrency,
+                        "Euro",
                         1.0f
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
+                        "US Dollar",
                         0.9f
                     )
                 )
@@ -137,6 +144,7 @@ class RateConversionViewModelRatesTest {
 
         val viewModel =
             RateConversionViewModel(
+                Locale.getDefault(),
                 repository,
                 UnconfinedTestDispatchersContainer
             )
@@ -149,6 +157,7 @@ class RateConversionViewModelRatesTest {
             it.size == 1 && it.contains(
                 ConvertedRate(
                     baseCurrency,
+                    "Euro",
                     1.0f
                 )
             )
@@ -160,6 +169,7 @@ class RateConversionViewModelRatesTest {
             it.size == 1 && it.contains(
                 ConvertedRate(
                     dolarCurrency,
+                    "US Dollar",
                     1.0f
                 )
             )
@@ -176,6 +186,7 @@ class RateConversionViewModelRatesTest {
             it.size == 1 && it.contains(
                 ConvertedRate(
                     dolarCurrency,
+                    "US Dollar",
                     1.0f
                 )
             )
@@ -186,12 +197,14 @@ class RateConversionViewModelRatesTest {
             listOf(
                 ConvertedRate(
                     baseCurrency,
+                    "Euro",
                     1.0f
                 )
             ),
             listOf(
                 ConvertedRate(
                     dolarCurrency,
+                    "US Dollar",
                     1.0f
                 )
             )
@@ -211,6 +224,7 @@ class RateConversionViewModelRatesTest {
 
         val viewModel =
             RateConversionViewModel(
+                Locale.getDefault(),
                 repository,
                 UnconfinedTestDispatchersContainer
             )
@@ -226,12 +240,14 @@ class RateConversionViewModelRatesTest {
                 it.contains(
                     ConvertedRate(
                         baseCurrency,
+                        "Euro",
                         1.0f
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
+                        "US Dollar",
                         0.9f
                     )
                 )
@@ -245,12 +261,14 @@ class RateConversionViewModelRatesTest {
                 it.contains(
                     ConvertedRate(
                         baseCurrency,
+                        "Euro",
                         2.0f
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
+                        "US Dollar",
                         1.8f
                     )
                 )
@@ -267,12 +285,14 @@ class RateConversionViewModelRatesTest {
                 it.contains(
                     ConvertedRate(
                         baseCurrency,
+                        "Euro",
                         2.0f
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
+                        "US Dollar",
                         1.6f
                     )
                 )
@@ -282,30 +302,36 @@ class RateConversionViewModelRatesTest {
             listOf(
                 ConvertedRate(
                     baseCurrency,
+                    "Euro",
                     1.0f
                 ),
                 ConvertedRate(
                     "USD",
+                    "US Dollar",
                     0.9f
                 )
             ),
             listOf(
                 ConvertedRate(
                     baseCurrency,
+                    "Euro",
                     2.0f
                 ),
                 ConvertedRate(
                     "USD",
+                    "US Dollar",
                     1.8f
                 )
             ),
             listOf(
                 ConvertedRate(
                     baseCurrency,
+                    "Euro",
                     2.0f
                 ),
                 ConvertedRate(
                     "USD",
+                    "US Dollar",
                     1.6f
                 )
             )

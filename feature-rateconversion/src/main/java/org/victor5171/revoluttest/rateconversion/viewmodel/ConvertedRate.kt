@@ -1,6 +1,7 @@
 package org.victor5171.revoluttest.rateconversion.viewmodel
 
 data class ConvertedRate(
-    val currency: String,
+    val currencyIdentifier: String,
+    val currencyName: String,
     val value: Float
 )

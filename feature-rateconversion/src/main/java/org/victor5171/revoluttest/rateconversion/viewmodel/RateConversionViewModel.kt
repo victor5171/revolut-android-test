@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
@@ -16,12 +15,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.victor5171.revoluttest.repository.DispatchersContainer
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
+import java.util.Currency
+import java.util.Locale
+import javax.inject.Inject
 
 private const val CURRENCY_UPDATE_RATE_IN_MILLISECONDS = 1000L
 private const val DEFAULT_BASE_CURRENCY = "EUR"
 private const val DEFAULT_STARTING_VALUE = 1.0f
 
 class RateConversionViewModel @Inject constructor(
+    private val locale: Locale,
     private val rateConversionRepository: RateConversionRepository,
     private val dispatchersContainer: DispatchersContainer
 ) : ViewModel() {
@@ -30,6 +33,7 @@ class RateConversionViewModel @Inject constructor(
     private var currentBaseCurrency: String? = null
 
     private val ratesMediatorLiveData = MediatorLiveData<List<ConvertedRate>>()
+    private val currencyCache = mutableMapOf<String, Currency>()
 
     private var ratesUpdateJob: Job? = null
 
@@ -65,20 +69,22 @@ class RateConversionViewModel @Inject constructor(
 
     private fun convertCurrencyValue(value: Float, multiplier: Float) = value * multiplier
 
+    private fun createConvertedRate(currencyIdentifier: String, value: Float): ConvertedRate {
+        val currency = currencyCache[currencyIdentifier] ?: Currency.getInstance(currencyIdentifier)
+        val currencyName = currency.getDisplayName(locale)
+        return ConvertedRate(currencyIdentifier, currencyName, value)
+    }
+
     private fun createCurrencyConversionSource(
         baseCurrency: String,
         value: Float
     ): LiveData<List<ConvertedRate>> {
         return rateConversionRepository.getRatesByAscOrdering(baseCurrency)
             .map { rates ->
-                val baseConvertedCurrency =
-                    ConvertedRate(
-                        baseCurrency,
-                        value
-                    )
+                val baseConvertedCurrency = createConvertedRate(baseCurrency, value)
 
                 val convertedRates = rates.map {
-                    ConvertedRate(
+                    createConvertedRate(
                         it.destinationCurrency,
                         convertCurrencyValue(value, it.multiplier)
                     )
