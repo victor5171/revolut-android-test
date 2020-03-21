@@ -1,17 +1,31 @@
 package org.victor5171.revoluttest.rateconversion.ui
 
-import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_rate.view.*
 import org.victor5171.revoluttest.rateconversion.databinding.ListItemRateBinding
+import org.victor5171.revoluttest.rateconversion.ui.formatting.MonetaryTextWatcher
+import org.victor5171.revoluttest.rateconversion.ui.keylistener.KeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
+import java.text.DecimalFormat
 
 class ConvertedRateViewHolder(
     private val listItemRateBinding: ListItemRateBinding,
-    private val onRateChanged: (currencyIdentifier: String, value: Float) -> Unit
+    private val keyListenerBuilder: KeyListenerBuilder,
+    private val decimalFormat: DecimalFormat,
+    private val onRateChanged: (currencyIdentifier: String, value: Double) -> Unit
 ) : RecyclerView.ViewHolder(listItemRateBinding.root) {
 
-    private var currentConvertedRate: ConvertedRate? = null
+    private val monetaryTextWatcher =
+        MonetaryTextWatcher(
+            itemView.txtValue,
+            decimalFormat
+        )
+
+    init {
+        with(itemView.txtValue) {
+            keyListener = keyListenerBuilder.build()
+        }
+    }
 
     fun bind(convertedRate: ConvertedRate) {
         itemView.setOnClickListener {
@@ -21,37 +35,33 @@ class ConvertedRateViewHolder(
         val txtValue = itemView.txtValue
 
         with(txtValue) {
+            removeTextChangedListener(monetaryTextWatcher)
+            monetaryTextWatcher.valueChanged = null
+
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     onRateChanged(convertedRate.currencyIdentifier, convertedRate.value)
                 }
             }
 
-            doAfterTextChanged {
-                if (isFocused) {
-                    onRateChanged(convertedRate.currencyIdentifier, it.toString().toFloat())
+            if (adapterPosition == 0) {
+                addTextChangedListener(monetaryTextWatcher)
+                monetaryTextWatcher.valueChanged = { value ->
+                    onRateChanged(convertedRate.currencyIdentifier, value)
                 }
             }
         }
 
-        if (currentConvertedRate?.currencyIdentifier != convertedRate.currencyIdentifier) {
-            listItemRateBinding.icon = CurrencyIconRetriever.getIcon(
-                listItemRateBinding.root.context,
-                convertedRate.currencyIdentifier
-            )
+        listItemRateBinding.icon = CurrencyIconRetriever.getIcon(
+            listItemRateBinding.root.context,
+            convertedRate.currencyIdentifier
+        )
+        listItemRateBinding.currencyIdentifier = convertedRate.currencyIdentifier
+        listItemRateBinding.currencyName = convertedRate.currencyName
 
-            listItemRateBinding.currencyIdentifier = convertedRate.currencyIdentifier
+        if (!txtValue.isFocused) {
+            listItemRateBinding.formattedValue = decimalFormat.format(convertedRate.value)
         }
-
-        if (currentConvertedRate?.currencyName != convertedRate.currencyName) {
-            listItemRateBinding.currencyName = convertedRate.currencyName
-        }
-
-        if (currentConvertedRate?.value != convertedRate.value && !txtValue.isFocused) {
-            listItemRateBinding.value = convertedRate.value
-        }
-
-        currentConvertedRate = convertedRate
 
         listItemRateBinding.executePendingBindings()
     }

@@ -7,5 +7,5 @@ internal data class RateMinimal(
     val destinationCurrency: String,
 
     @ColumnInfo(name = "multiplier")
-    val multiplier: Float
+    val multiplier: Double
 )

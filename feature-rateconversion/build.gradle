@@ -57,6 +57,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "org.bitbucket.cowwoc:diff-match-patch:$diffMatchPatchVersion"
 
     //Include the missing JAXB that the Databinding framework requires
     if (JavaVersion.current().ordinal() >= JavaVersion.VERSION_1_9.ordinal()) {

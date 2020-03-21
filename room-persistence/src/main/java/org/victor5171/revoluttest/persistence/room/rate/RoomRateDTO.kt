@@ -18,5 +18,5 @@ internal data class RoomRateDTO(
     val destinationCurrency: String,
 
     @ColumnInfo(name = "multiplier")
-    val multiplier: Float
+    val multiplier: Double
 )

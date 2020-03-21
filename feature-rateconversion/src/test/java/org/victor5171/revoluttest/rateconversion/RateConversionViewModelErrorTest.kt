@@ -67,7 +67,7 @@ class RateConversionViewModelErrorTest {
 
         testObserver.assertValue { it == mockedException }
 
-        viewModel.convert(baseCurrency, 1f)
+        viewModel.convert(baseCurrency, 1.0)
 
         testObserver.assertValue { it == null }
     }

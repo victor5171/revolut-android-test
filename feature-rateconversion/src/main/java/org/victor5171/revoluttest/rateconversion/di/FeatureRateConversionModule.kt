@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import org.victor5171.revoluttest.rateconversion.ui.keylistener.KeyListenerBuilder
+import org.victor5171.revoluttest.rateconversion.ui.keylistener.NumberKeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.viewmodelextensions.viewmodelfactory.ViewModelKey
 
@@ -13,4 +15,7 @@ interface FeatureRateConversionModule {
     @IntoMap
     @ViewModelKey(RateConversionViewModel::class)
     fun bindRateConversionViewModel(rateConversionViewModel: RateConversionViewModel): ViewModel
+
+    @Binds
+    fun bindKeyListenerBuilder(numberKeyListenerBuilder: NumberKeyListenerBuilder): KeyListenerBuilder
 }

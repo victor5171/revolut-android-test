@@ -23,6 +23,7 @@ ext {
     injectVersion = "1"
     recyclerViewVersion = "1.1.0"
     constraintLayoutVersion = "1.1.3"
+    diffMatchPatchVersion = "1.2"
 
     //Databinding dependencies
     jaxBCoreVersion = "2.3.0.1"

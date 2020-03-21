@@ -19,7 +19,7 @@ class RateConversionRepositoryTest {
     @Test
     fun `When I get an emission on the rates source, it should emit a Rate object`() = runBlocking {
         val baseCurrency = "TES"
-        val rateDTO = RateDTO("DES", 1.1f)
+        val rateDTO = RateDTO("DES", 1.1)
 
         val rateDAO = mockk<RateDAO> {
             every { getRatesByAscOrdering(baseCurrency) } returns flowOf(listOf(rateDTO))
@@ -31,7 +31,7 @@ class RateConversionRepositoryTest {
 
         Assert.assertEquals(1, rates.size)
         Assert.assertEquals(rateDTO.destinationCurrency, rates[0].destinationCurrency)
-        Assert.assertEquals(rateDTO.multiplier, rates[0].multiplier)
+        Assert.assertEquals(rateDTO.multiplier, rates[0].multiplier, 0.0)
     }
 
     @Test(expected = Exception::class)
@@ -55,7 +55,7 @@ class RateConversionRepositoryTest {
         runBlocking {
             val baseCurrency = "TES"
 
-            val latestRatesResponse = LatestRatesResponse(baseCurrency, mapOf("DES" to 1.1f))
+            val latestRatesResponse = LatestRatesResponse(baseCurrency, mapOf("DES" to 1.1))
 
             val androidApi = mockk<AndroidApi> {
                 coEvery { getLatestRates(baseCurrency) } returns latestRatesResponse
@@ -77,7 +77,7 @@ class RateConversionRepositoryTest {
             val capturedRatesDTOs = ratesDTOsSlot.captured
             Assert.assertEquals(1, capturedRatesDTOs.size)
             Assert.assertEquals("DES", capturedRatesDTOs[0].destinationCurrency)
-            Assert.assertEquals(1.1f, capturedRatesDTOs[0].multiplier)
+            Assert.assertEquals(1.1, capturedRatesDTOs[0].multiplier, 0.0)
         }
 
     @Test(expected = Exception::class)

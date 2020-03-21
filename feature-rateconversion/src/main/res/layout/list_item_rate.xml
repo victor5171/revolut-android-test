@@ -15,8 +15,8 @@
             name="currencyName"
             type="String" />
         <variable
-            name="value"
-            type="Float" />
+            name="formattedValue"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,10 +70,10 @@
             android:id="@+id/txtValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textSize="@dimen/value_edittext_text_size"
             android:textStyle="bold"
-            android:text="@{value.toString()}"
+            android:text="@{formattedValue}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

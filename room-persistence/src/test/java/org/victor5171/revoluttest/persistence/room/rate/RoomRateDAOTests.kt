@@ -45,8 +45,8 @@ class RoomRateDAOTests {
         roomRateDAO.updateRates(
             "EUR",
             listOf(
-                RateDTO("USD", 1.14f),
-                RateDTO("BRL", 5f)
+                RateDTO("USD", 1.14),
+                RateDTO("BRL", 5.0)
             )
         )
     }
@@ -62,15 +62,15 @@ class RoomRateDAOTests {
         roomRateDAO.updateRates(
             "EUR",
             listOf(
-                RateDTO("BRL", 5f),
-                RateDTO("USD", 1.14f)
+                RateDTO("BRL", 5.0),
+                RateDTO("USD", 1.14)
             )
         )
 
         val rates = roomRateDAO.getRatesByAscOrdering("EUR").first()
 
-        Assert.assertEquals(RateDTO("BRL", 5f), rates[0])
-        Assert.assertEquals(RateDTO("USD", 1.14f), rates[1])
+        Assert.assertEquals(RateDTO("BRL", 5.0), rates[0])
+        Assert.assertEquals(RateDTO("USD", 1.14), rates[1])
     }
 
     @Test
@@ -78,22 +78,22 @@ class RoomRateDAOTests {
         roomRateDAO.updateRates(
             "EUR",
             listOf(
-                RateDTO("BRL", 5f),
-                RateDTO("USD", 1.14f)
+                RateDTO("BRL", 5.0),
+                RateDTO("USD", 1.14)
             )
         )
 
         roomRateDAO.updateRates(
             "EUR",
             listOf(
-                RateDTO("BRL", 5.20f),
-                RateDTO("USD", 1.20f)
+                RateDTO("BRL", 5.20),
+                RateDTO("USD", 1.20)
             )
         )
 
         val rates = roomRateDAO.getRatesByAscOrdering("EUR").first()
 
-        Assert.assertEquals(RateDTO("BRL", 5.20f), rates[0])
-        Assert.assertEquals(RateDTO("USD", 1.20f), rates[1])
+        Assert.assertEquals(RateDTO("BRL", 5.20), rates[0])
+        Assert.assertEquals(RateDTO("USD", 1.20), rates[1])
     }
 }

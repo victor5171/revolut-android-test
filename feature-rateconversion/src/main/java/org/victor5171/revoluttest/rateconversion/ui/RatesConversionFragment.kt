@@ -12,15 +12,29 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_rates_conversion.*
 import org.victor5171.revoluttest.rateconversion.R
 import org.victor5171.revoluttest.rateconversion.di.FeatureRateConversionSubComponentContainer
+import org.victor5171.revoluttest.rateconversion.ui.keylistener.KeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 class RatesConversionFragment : Fragment() {
 
-    private val convertedRateAdapter by lazy { ConvertedRateAdapter(this::rateOnFocus) }
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var keyListenerBuilder: KeyListenerBuilder
+
+    @Inject
+    lateinit var decimalFormat: DecimalFormat
+
+    private val convertedRateAdapter by lazy {
+        ConvertedRateAdapter(
+            keyListenerBuilder,
+            decimalFormat,
+            this::rateOnFocus
+        )
+    }
 
     private val viewModel: RateConversionViewModel by lazy {
         ViewModelProvider(
@@ -62,7 +76,7 @@ class RatesConversionFragment : Fragment() {
         })
     }
 
-    private fun rateOnFocus(currencyIdentifier: String, value: Float) {
+    private fun rateOnFocus(currencyIdentifier: String, value: Double) {
         viewModel.convert(currencyIdentifier, value)
     }
 }

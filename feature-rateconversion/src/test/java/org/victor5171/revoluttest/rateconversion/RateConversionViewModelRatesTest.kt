@@ -62,7 +62,7 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0f
+                    1.0
                 )
             )
         }
@@ -79,7 +79,7 @@ class RateConversionViewModelRatesTest {
             delay(5000L)
             emit(
                 listOf(
-                    Rate("USD", 0.9f)
+                    Rate("USD", 0.9)
                 )
             )
         }.flowOn(testCoroutineDispatcher)
@@ -103,7 +103,7 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0f
+                    1.0
                 )
             )
         }
@@ -116,14 +116,14 @@ class RateConversionViewModelRatesTest {
                     ConvertedRate(
                         baseCurrency,
                         "Euro",
-                        1.0f
+                        1.0
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
                         "US Dollar",
-                        0.9f
+                        0.9
                     )
                 )
         }
@@ -158,19 +158,19 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0f
+                    1.0
                 )
             )
         }
 
-        viewModel.convert(dolarCurrency, 1.0f)
+        viewModel.convert(dolarCurrency, 1.0)
 
         ratesTestObserver.assertValue {
             it.size == 1 && it.contains(
                 ConvertedRate(
                     dolarCurrency,
                     "US Dollar",
-                    1.0f
+                    1.0
                 )
             )
         }
@@ -178,7 +178,7 @@ class RateConversionViewModelRatesTest {
         // This should be ignored, because the view model is observing another source since the base
         // currency has changed
         channelForBaseCurrency.sendBlocking(listOf(
-            Rate("USD", 0.9f)
+            Rate("USD", 0.9)
         ))
 
         // The LiveData should maintain the same value as before
@@ -187,7 +187,7 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     dolarCurrency,
                     "US Dollar",
-                    1.0f
+                    1.0
                 )
             )
         }
@@ -198,14 +198,14 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0f
+                    1.0
                 )
             ),
             listOf(
                 ConvertedRate(
                     dolarCurrency,
                     "US Dollar",
-                    1.0f
+                    1.0
                 )
             )
         )
@@ -230,7 +230,7 @@ class RateConversionViewModelRatesTest {
             )
 
         channelForBaseCurrency.sendBlocking(listOf(
-            Rate("USD", 0.9f)
+            Rate("USD", 0.9)
         ))
 
         val ratesTestObserver = viewModel.rates.test()
@@ -241,19 +241,19 @@ class RateConversionViewModelRatesTest {
                     ConvertedRate(
                         baseCurrency,
                         "Euro",
-                        1.0f
+                        1.0
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
                         "US Dollar",
-                        0.9f
+                        0.9
                     )
                 )
         }
 
-        viewModel.convert(baseCurrency, 2.0f)
+        viewModel.convert(baseCurrency, 2.0)
 
         // Using the same rates, but checking if the converted values were updated
         ratesTestObserver.assertValue {
@@ -262,21 +262,21 @@ class RateConversionViewModelRatesTest {
                     ConvertedRate(
                         baseCurrency,
                         "Euro",
-                        2.0f
+                        2.0
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
                         "US Dollar",
-                        1.8f
+                        1.8
                     )
                 )
         }
 
         // Updating the rates
         channelForBaseCurrency.sendBlocking(listOf(
-            Rate("USD", 0.8f)
+            Rate("USD", 0.8)
         ))
 
         // Using the same rates, but checking if the converted values were updated
@@ -286,14 +286,14 @@ class RateConversionViewModelRatesTest {
                     ConvertedRate(
                         baseCurrency,
                         "Euro",
-                        2.0f
+                        2.0
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
                         "US Dollar",
-                        1.6f
+                        1.6
                     )
                 )
         }
@@ -303,36 +303,36 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0f
+                    1.0
                 ),
                 ConvertedRate(
                     "USD",
                     "US Dollar",
-                    0.9f
+                    0.9
                 )
             ),
             listOf(
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    2.0f
+                    2.0
                 ),
                 ConvertedRate(
                     "USD",
                     "US Dollar",
-                    1.8f
+                    1.8
                 )
             ),
             listOf(
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    2.0f
+                    2.0
                 ),
                 ConvertedRate(
                     "USD",
                     "US Dollar",
-                    1.6f
+                    1.6
                 )
             )
         )

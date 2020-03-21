@@ -113,7 +113,7 @@ class RateConversionViewModelScheduleTest {
         coVerify(exactly = 1) { repository.loadRates(euroCurrency) }
 
         // Change to a new currency, should reset the timer
-        viewModel.convert(dolarCurrency, 1f)
+        viewModel.convert(dolarCurrency, 1.0)
 
         // Wait a small amount of time, not enough to update the rates
         testCoroutineDispatcher.advanceTimeBy(500L)
@@ -158,7 +158,7 @@ class RateConversionViewModelScheduleTest {
 
         coVerify(exactly = 1) { repository.loadRates(baseCurrency) }
 
-        viewModel.convert(baseCurrency, 1.2f)
+        viewModel.convert(baseCurrency, 1.2)
 
         coVerify(exactly = 2) { repository.loadRates(baseCurrency) }
 

@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 private const val CURRENCY_UPDATE_RATE_IN_MILLISECONDS = 1000L
 private const val DEFAULT_BASE_CURRENCY = "EUR"
-private const val DEFAULT_STARTING_VALUE = 1.0f
+private const val DEFAULT_STARTING_VALUE = 1.0
 
 class RateConversionViewModel @Inject constructor(
     private val locale: Locale,
@@ -49,7 +49,7 @@ class RateConversionViewModel @Inject constructor(
         )
     }
 
-    fun convert(baseCurrency: String, value: Float) {
+    fun convert(baseCurrency: String, value: Double) {
         ratesMediatorLiveData.removeSource(currentSource)
 
         currentSource = createCurrencyConversionSource(baseCurrency, value)
@@ -70,9 +70,9 @@ class RateConversionViewModel @Inject constructor(
         }
     }
 
-    private fun convertCurrencyValue(value: Float, multiplier: Float) = value * multiplier
+    private fun convertCurrencyValue(value: Double, multiplier: Double) = value * multiplier
 
-    private fun createConvertedRate(currencyIdentifier: String, value: Float): ConvertedRate {
+    private fun createConvertedRate(currencyIdentifier: String, value: Double): ConvertedRate {
         val currency = currencyCache[currencyIdentifier] ?: Currency.getInstance(currencyIdentifier)
         val currencyName = currency.getDisplayName(locale)
         return ConvertedRate(currencyIdentifier, currencyName, value)
@@ -80,7 +80,7 @@ class RateConversionViewModel @Inject constructor(
 
     private fun createCurrencyConversionSource(
         baseCurrency: String,
-        value: Float
+        value: Double
     ): LiveData<List<ConvertedRate>> {
         return rateConversionRepository.getRatesByAscOrdering(baseCurrency)
             .map { rates ->
