@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_rates_conversion.*
 import org.victor5171.revoluttest.rateconversion.R
 import org.victor5171.revoluttest.rateconversion.di.FeatureRateConversionSubComponentContainer
-import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import javax.inject.Inject
 
@@ -20,7 +20,14 @@ class RatesConversionFragment : Fragment() {
     private val convertedRateAdapter by lazy { ConvertedRateAdapter(this::rateOnFocus) }
 
     @Inject
-    lateinit var viewModel: RateConversionViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: RateConversionViewModel by lazy {
+        ViewModelProvider(
+            viewModelStore,
+            viewModelFactory
+        )[RateConversionViewModel::class.java]
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,9 +52,17 @@ class RatesConversionFragment : Fragment() {
         viewModel.rates.observe(viewLifecycleOwner, Observer {
             convertedRateAdapter.submitList(it)
         })
+
+        viewModel.errorLoadingData.observe(viewLifecycleOwner, Observer {
+            ctlOfflineWarning.visibility = if (it != null) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        })
     }
 
-    private fun rateOnFocus(convertedRate: ConvertedRate) {
-        viewModel.convert(convertedRate.currencyIdentifier, 1f)
+    private fun rateOnFocus(currencyIdentifier: String, value: Float) {
+        viewModel.convert(currencyIdentifier, value)
     }
 }

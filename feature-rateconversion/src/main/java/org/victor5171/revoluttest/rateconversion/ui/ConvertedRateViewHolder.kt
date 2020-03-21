@@ -1,5 +1,6 @@
 package org.victor5171.revoluttest.rateconversion.ui
 
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_rate.view.*
 import org.victor5171.revoluttest.rateconversion.databinding.ListItemRateBinding
@@ -7,19 +8,29 @@ import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
 
 class ConvertedRateViewHolder(
     private val listItemRateBinding: ListItemRateBinding,
-    private val onFocus: (convertedRate: ConvertedRate) -> Unit
+    private val onRateChanged: (currencyIdentifier: String, value: Float) -> Unit
 ) : RecyclerView.ViewHolder(listItemRateBinding.root) {
 
     private var currentConvertedRate: ConvertedRate? = null
 
     fun bind(convertedRate: ConvertedRate) {
         itemView.setOnClickListener {
-            onFocus(convertedRate)
+            itemView.txtValue.requestFocus()
         }
 
-        itemView.txtValue.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                onFocus(convertedRate)
+        val txtValue = itemView.txtValue
+
+        with(txtValue) {
+            setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    onRateChanged(convertedRate.currencyIdentifier, convertedRate.value)
+                }
+            }
+
+            doAfterTextChanged {
+                if (isFocused) {
+                    onRateChanged(convertedRate.currencyIdentifier, it.toString().toFloat())
+                }
             }
         }
 
@@ -36,7 +47,7 @@ class ConvertedRateViewHolder(
             listItemRateBinding.currencyName = convertedRate.currencyName
         }
 
-        if (currentConvertedRate?.value != convertedRate.value) {
+        if (currentConvertedRate?.value != convertedRate.value && !txtValue.isFocused) {
             listItemRateBinding.value = convertedRate.value
         }
 

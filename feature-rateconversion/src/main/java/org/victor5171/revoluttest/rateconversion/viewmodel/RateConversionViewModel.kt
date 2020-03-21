@@ -35,6 +35,9 @@ class RateConversionViewModel @Inject constructor(
     private val ratesMediatorLiveData = MediatorLiveData<List<ConvertedRate>>()
     private val currencyCache = mutableMapOf<String, Currency>()
 
+    private val mutableErrorLoadingData = MutableLiveData<Exception>()
+    val errorLoadingData: LiveData<Exception> = mutableErrorLoadingData
+
     private var ratesUpdateJob: Job? = null
 
     val rates: LiveData<List<ConvertedRate>> = ratesMediatorLiveData
@@ -98,7 +101,13 @@ class RateConversionViewModel @Inject constructor(
     private fun loadRates(baseCurrency: String) {
         viewModelScope.launch {
             withContext(dispatchersContainer.io) {
-                rateConversionRepository.loadRates(baseCurrency)
+                try {
+                    rateConversionRepository.loadRates(baseCurrency)
+                    mutableErrorLoadingData.postValue(null)
+                }
+                catch(exception: Exception) {
+                    mutableErrorLoadingData.postValue(exception)
+                }
             }
         }
     }

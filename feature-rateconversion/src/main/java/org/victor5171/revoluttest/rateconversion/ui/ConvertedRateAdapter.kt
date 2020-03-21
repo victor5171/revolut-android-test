@@ -8,7 +8,7 @@ import org.victor5171.revoluttest.rateconversion.databinding.ListItemRateBinding
 import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
 
 class ConvertedRateAdapter(
-    private val onFocus: (convertedRate: ConvertedRate) -> Unit
+    private val onRateChanged: (currencyIdentifier: String, value: Float) -> Unit
 ) : ListAdapter<ConvertedRate, ConvertedRateViewHolder>(DiffUtil) {
 
     init {
@@ -18,7 +18,7 @@ class ConvertedRateAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConvertedRateViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val listItemRateBinding = ListItemRateBinding.inflate(layoutInflater, parent, false)
-        return ConvertedRateViewHolder(listItemRateBinding, onFocus)
+        return ConvertedRateViewHolder(listItemRateBinding, onRateChanged)
     }
 
     override fun onBindViewHolder(holder: ConvertedRateViewHolder, position: Int) {

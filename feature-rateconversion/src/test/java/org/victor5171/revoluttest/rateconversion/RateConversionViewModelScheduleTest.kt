@@ -1,6 +1,7 @@
 package org.victor5171.revoluttest.rateconversion
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.jraska.livedata.test
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -47,6 +48,38 @@ class RateConversionViewModelScheduleTest {
         testCoroutineDispatcher.advanceTimeBy(5000L)
 
         coVerify(exactly = 6) { repository.loadRates(baseCurrency) }
+    }
+
+    @Test
+    fun `When I open the view model and an error happens while loading, it should continue trying every 1 second`() {
+        val baseCurrency = "EUR"
+
+        val mockedException = Exception()
+
+        val repository = mockk<RateConversionRepository> {
+            coEvery { loadRates(baseCurrency) } throws mockedException andThen Unit
+            every { getRatesByAscOrdering(baseCurrency) } returns emptyFlow()
+        }
+
+        val testCoroutineDispatcher = TestCoroutineDispatcher()
+
+        val dispatchersContainer = TestDispatchersContainer(testCoroutineDispatcher)
+
+        Dispatchers.setMain(testCoroutineDispatcher)
+
+        val viewModel = RateConversionViewModel(
+            Locale.getDefault(),
+            repository,
+            dispatchersContainer
+        )
+
+        val testErrorObserver = viewModel.errorLoadingData.test()
+
+        testCoroutineDispatcher.advanceTimeBy(1000L)
+
+        coVerify(exactly = 2) { repository.loadRates(baseCurrency) }
+
+        testErrorObserver.assertValueHistory(mockedException, null)
     }
 
     @Test
