@@ -63,7 +63,7 @@ class FormatterComparerTest {
         var index = 0
 
         differences.forEach {
-            when(it.operation) {
+            when (it.operation) {
                 DiffMatchPatch.Operation.DELETE -> {
                     replace(index, index + it.text.length, "")
                 }

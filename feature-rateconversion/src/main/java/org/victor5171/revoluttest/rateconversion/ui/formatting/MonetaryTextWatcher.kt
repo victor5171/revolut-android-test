@@ -3,9 +3,10 @@ package org.victor5171.revoluttest.rateconversion.ui.formatting
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import androidx.core.text.getSpans
-import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch
 import java.text.DecimalFormat
+import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch
+
+private const val MAXIMUM_INTEGER_DIGITS = 10
 
 class MonetaryTextWatcher(
     private val editText: EditText,
@@ -19,34 +20,21 @@ class MonetaryTextWatcher(
 
     var valueChanged: ((value: Double) -> Unit)? = null
 
-    private var isHandlingSpans = false
+    private var isProcessing = false
     private lateinit var copiedTextBeforeChanges: CharSequence
 
     override fun afterTextChanged(newText: Editable?) {
+        if (isProcessing) {
+            return
+        }
+
         if (newText == null) {
             return
         }
 
-        if (isHandlingSpans) {
-            return
+        convertToDouble(newText)?.let {
+            valueChanged?.invoke(it)
         }
-
-        val spans = newText.getSpans<FormattingSpan>(0)
-
-        isHandlingSpans = true
-
-        spans.forEach {
-            when (it) {
-                is DeleteFormattingSpan -> newText.delete(it.start, it.end)
-                is InsertFormattingSpan -> newText.insert(it.position, it.charSequence)
-            }
-        }
-
-        spans.forEach(newText::removeSpan)
-
-        isHandlingSpans = false
-
-        valueChanged?.invoke(newText.toString().filter { it != groupingSeparator }.toDouble())
     }
 
     override fun beforeTextChanged(
@@ -55,6 +43,10 @@ class MonetaryTextWatcher(
         lengthToBeChanged: Int,
         lengthToBeAdded: Int
     ) {
+        if (isProcessing) {
+            return
+        }
+
         if (oldText != null) {
             copiedTextBeforeChanges = oldText.toString()
         }
@@ -66,13 +58,12 @@ class MonetaryTextWatcher(
         lengthToBeChanged: Int,
         lengthToBeAdded: Int
     ) {
-        if (isHandlingSpans) {
+        if (isProcessing) {
             return
         }
 
         if (newText == null) {
             editText.setText("0")
-
             return
         }
 
@@ -83,57 +74,67 @@ class MonetaryTextWatcher(
             return
         }
 
-        val newTextInString = newText.toString()
-        val parsedNumber = newTextInString.filter { it != groupingSeparator }.toDoubleOrNull()
+        val parsedNumber = convertToDouble(newText)
 
-        //Wrong number input, we have to reverse it
-        if (parsedNumber == null) {
-            editText.text.setSpan(
-                DeleteFormattingSpan(startIndex, startIndex + lengthToBeAdded),
-                0,
-                0,
-                0
-            )
+        parsedNumber?.let {
+            lockProcessing {
+                // Checking if the input exceeds the limit of integer digits
+                val positionOfDecimalSeparator = newText.indexOf(decimalCurrencySeparator)
+                val positionOfEndOfIntegerDigits =
+                    if (positionOfDecimalSeparator != -1) positionOfDecimalSeparator else newText.length - 1
+                val numberOfGroupSeparators = newText.count { it == groupingSeparator }
+                if ((startIndex + lengthToBeAdded) <= positionOfEndOfIntegerDigits && positionOfEndOfIntegerDigits > MAXIMUM_INTEGER_DIGITS + numberOfGroupSeparators) {
+                    editText.text.delete(startIndex, startIndex + lengthToBeAdded)
+                }
 
-            if (lengthToBeChanged > 0) {
-                val charSequenceToInsert =
-                    copiedTextBeforeChanges.substring(startIndex, startIndex + lengthToBeChanged)
+                // After removing the exceeding input, format the new number, compare the changes, and apply them
+                val formattedNumber = decimalFormat.format(convertToDouble(editText.text))
 
-                editText.text.setSpan(
-                    InsertFormattingSpan(startIndex, charSequenceToInsert),
-                    0,
-                    0,
-                    0
-                )
+                val newTextInString = newText.toString()
+                val differences = diffMatchPatch.diffMain(newTextInString, formattedNumber)
+
+                var index = 0
+                differences.forEach {
+                    when (it.operation) {
+                        DiffMatchPatch.Operation.DELETE -> {
+                            editText.text.delete(index, index + it.text.length)
+                        }
+                        DiffMatchPatch.Operation.INSERT -> {
+                            editText.text.insert(index, it.text)
+                            index += it.text.length
+                        }
+                        DiffMatchPatch.Operation.EQUAL -> {
+                            index += it.text.length
+                        }
+                        null -> {
+                        }
+                    }
+                }
             }
+        } ?: run {
+            // Wrong number input, we have to reverse it
+            lockProcessing {
+                editText.text.delete(startIndex, startIndex + lengthToBeAdded)
 
-            return
-        }
+                if (lengthToBeChanged > 0) {
+                    val charSequenceToInsert =
+                        copiedTextBeforeChanges.substring(
+                            startIndex,
+                            startIndex + lengthToBeChanged
+                        )
 
-        val formattedNumber = decimalFormat.format(parsedNumber)
-
-        val differences = diffMatchPatch.diffMain(newTextInString, formattedNumber)
-
-        var index = 0
-
-        differences.forEach {
-            when (it.operation) {
-                DiffMatchPatch.Operation.DELETE -> {
-                    editText.text.setSpan(
-                        DeleteFormattingSpan(index, index + it.text.length),
-                        0,
-                        0,
-                        0
-                    )
-                }
-                DiffMatchPatch.Operation.INSERT -> {
-                    editText.text.setSpan(InsertFormattingSpan(index, it.text), 0, 0, 0)
-                    index += it.text.length
-                }
-                DiffMatchPatch.Operation.EQUAL -> {
-                    index += it.text.length
+                    editText.text.insert(startIndex, charSequenceToInsert)
                 }
             }
         }
     }
+
+    private fun lockProcessing(function: () -> Unit) {
+        isProcessing = true
+        function()
+        isProcessing = false
+    }
+
+    private fun convertToDouble(text: CharSequence) =
+        text.toString().filter { it != groupingSeparator }.toDoubleOrNull()
 }

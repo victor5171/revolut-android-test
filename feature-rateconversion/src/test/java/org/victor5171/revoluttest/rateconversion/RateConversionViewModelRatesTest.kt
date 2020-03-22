@@ -5,6 +5,7 @@ import com.jraska.livedata.test
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -27,7 +28,6 @@ import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.revoluttest.repository.rateconversion.Rate
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
-import java.util.Locale
 
 @FlowPreview
 @ExperimentalCoroutinesApi

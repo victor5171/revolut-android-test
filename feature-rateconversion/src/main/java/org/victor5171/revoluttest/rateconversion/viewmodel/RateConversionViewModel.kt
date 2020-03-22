@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import java.util.Currency
+import java.util.Locale
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
@@ -15,9 +18,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.victor5171.revoluttest.repository.DispatchersContainer
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
-import java.util.Currency
-import java.util.Locale
-import javax.inject.Inject
 
 private const val CURRENCY_UPDATE_RATE_IN_MILLISECONDS = 1000L
 private const val DEFAULT_BASE_CURRENCY = "EUR"
@@ -104,8 +104,7 @@ class RateConversionViewModel @Inject constructor(
                 try {
                     rateConversionRepository.loadRates(baseCurrency)
                     mutableErrorLoadingData.postValue(null)
-                }
-                catch(exception: Exception) {
+                } catch (exception: Exception) {
                     mutableErrorLoadingData.postValue(exception)
                 }
             }

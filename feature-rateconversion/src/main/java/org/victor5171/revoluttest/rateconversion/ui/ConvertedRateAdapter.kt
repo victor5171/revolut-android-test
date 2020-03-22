@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import java.text.DecimalFormat
 import org.victor5171.revoluttest.rateconversion.databinding.ListItemRateBinding
 import org.victor5171.revoluttest.rateconversion.ui.keylistener.KeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
-import java.text.DecimalFormat
 
 class ConvertedRateAdapter(
     private val keyListenerBuilder: KeyListenerBuilder,

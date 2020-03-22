@@ -5,6 +5,7 @@ import com.jraska.livedata.test
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.test.setMain
@@ -14,7 +15,6 @@ import org.junit.Test
 import org.victor5171.revoluttest.UnconfinedTestDispatchersContainer
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
-import java.util.Locale
 
 class RateConversionViewModelErrorTest {
 

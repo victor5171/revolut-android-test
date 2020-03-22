@@ -6,6 +6,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.emptyFlow
@@ -17,7 +18,6 @@ import org.victor5171.revoluttest.TestDispatchersContainer
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.revoluttest.repository.DispatchersContainer
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
-import java.util.Locale
 
 @ExperimentalCoroutinesApi
 class RateConversionViewModelScheduleTest {

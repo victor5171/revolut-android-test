@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.SimpleItemAnimator
+import java.text.DecimalFormat
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_rates_conversion.*
 import org.victor5171.revoluttest.rateconversion.R
 import org.victor5171.revoluttest.rateconversion.di.FeatureRateConversionSubComponentContainer
 import org.victor5171.revoluttest.rateconversion.ui.keylistener.KeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
-import java.text.DecimalFormat
-import javax.inject.Inject
 
 class RatesConversionFragment : Fragment() {
 
@@ -51,7 +51,8 @@ class RatesConversionFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_rates_conversion, container, false)
