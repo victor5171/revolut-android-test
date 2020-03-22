@@ -10,5 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+
+        title = getString(R.string.rates_and_conversion_name)
     }
 }
