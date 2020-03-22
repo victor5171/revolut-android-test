@@ -1,23 +1,18 @@
 package org.victor5171.revoluttest.rateconversion.ui.formatting
 
-import android.icu.text.DecimalFormat
-import android.icu.text.NumberFormat
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch
+import org.victor5171.revoluttest.rateconversion.numberformatter.NumberFormatter
 
 private const val MAXIMUM_INTEGER_DIGITS = 8
 
 class MonetaryTextWatcher(
     private val editText: EditText,
-    private val numberFormat: NumberFormat,
-    private val decimalFormat: DecimalFormat
+    private val numberFormatter: NumberFormatter
 ) : TextWatcher {
 
-    private val groupingSeparator = decimalFormat.decimalFormatSymbols.groupingSeparator
-    private val decimalCurrencySeparator =
-        decimalFormat.decimalFormatSymbols.monetaryDecimalSeparator
     private val diffMatchPatch = DiffMatchPatch()
 
     var valueChanged: ((value: Double) -> Unit)? = null
@@ -71,7 +66,11 @@ class MonetaryTextWatcher(
 
         val newTextLength = newText.length
 
-        if (newText.isEmpty() || (newTextLength == 1 && newText[0] == decimalCurrencySeparator)) {
+        if (newText.isEmpty()) {
+            return
+        }
+
+        if (newTextLength == 1 && newText[0] == numberFormatter.decimalSeparator) {
             editText.text.replace(0, 0, "0")
             return
         }
@@ -81,16 +80,17 @@ class MonetaryTextWatcher(
         parsedNumber?.let {
             lockProcessing {
                 // Checking if the input exceeds the limit of integer digits
-                val positionOfDecimalSeparator = newText.indexOf(decimalCurrencySeparator)
+                val positionOfDecimalSeparator = newText.indexOf(numberFormatter.decimalSeparator)
                 val positionOfEndOfIntegerDigits =
-                    if (positionOfDecimalSeparator != -1) positionOfDecimalSeparator else newText.length - 1
-                val numberOfGroupSeparators = newText.count { it == groupingSeparator }
+                    if (positionOfDecimalSeparator != -1) positionOfDecimalSeparator else newText.length
+                val numberOfGroupSeparators =
+                    newText.count { it == numberFormatter.groupingSeparator }
                 if ((startIndex + lengthToBeAdded) <= positionOfEndOfIntegerDigits && positionOfEndOfIntegerDigits > MAXIMUM_INTEGER_DIGITS + numberOfGroupSeparators) {
                     editText.text.delete(startIndex, startIndex + lengthToBeAdded)
                 }
 
                 // After removing the exceeding input, format the new number, compare the changes, and apply them
-                val formattedNumber = decimalFormat.format(convertToDouble(editText.text))
+                val formattedNumber = numberFormatter.formatFromUnformattedString(editText.text)
 
                 val newTextInString = newText.toString()
                 val differences = diffMatchPatch.diffMain(newTextInString, formattedNumber)
@@ -137,7 +137,5 @@ class MonetaryTextWatcher(
         isProcessing = false
     }
 
-    private fun convertToDouble(text: CharSequence) = runCatching {
-        numberFormat.parse(text.toString()).toDouble()
-    }.getOrNull()
+    private fun convertToDouble(text: CharSequence) = numberFormatter.tryParse(text.toString())
 }

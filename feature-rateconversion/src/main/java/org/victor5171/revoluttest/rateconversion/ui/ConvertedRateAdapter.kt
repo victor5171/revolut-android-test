@@ -1,13 +1,12 @@
 package org.victor5171.revoluttest.rateconversion.ui
 
-import android.icu.text.DecimalFormat
-import android.icu.text.NumberFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.victor5171.revoluttest.rateconversion.databinding.ListItemRateBinding
+import org.victor5171.revoluttest.rateconversion.numberformatter.NumberFormatter
 import org.victor5171.revoluttest.rateconversion.ui.keylistener.KeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.viewmodel.AdapterItem
 import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
@@ -18,8 +17,7 @@ private const val VIEW_TYPE_FOR_LOADING = 1
 
 class ConvertedRateAdapter(
     private val keyListenerBuilder: KeyListenerBuilder,
-    private val numberFormat: NumberFormat,
-    private val decimalFormat: DecimalFormat,
+    private val numberFormatter: NumberFormatter,
     private val onRateChanged: (currencyIdentifier: String, value: Double) -> Unit
 ) : ListAdapter<AdapterItem, RecyclerView.ViewHolder>(DiffUtil) {
 
@@ -31,8 +29,7 @@ class ConvertedRateAdapter(
                 return ConvertedRateViewHolder(
                     listItemRateBinding,
                     keyListenerBuilder,
-                    numberFormat,
-                    decimalFormat,
+                    numberFormatter,
                     onRateChanged
                 )
             }

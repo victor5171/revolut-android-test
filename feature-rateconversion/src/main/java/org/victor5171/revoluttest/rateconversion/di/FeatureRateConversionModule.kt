@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import org.victor5171.revoluttest.rateconversion.numberformatter.AndroidIcuNumberFormatter
+import org.victor5171.revoluttest.rateconversion.numberformatter.NumberFormatter
 import org.victor5171.revoluttest.rateconversion.ui.keylistener.KeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.ui.keylistener.NumberKeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
@@ -18,4 +20,7 @@ interface FeatureRateConversionModule {
 
     @Binds
     fun bindKeyListenerBuilder(numberKeyListenerBuilder: NumberKeyListenerBuilder): KeyListenerBuilder
+
+    @Binds
+    fun bindNumberFormatter(androidIcuNumberFormatter: AndroidIcuNumberFormatter): NumberFormatter
 }

@@ -76,6 +76,7 @@
             android:inputType="numberDecimal"
             android:textSize="@dimen/value_edittext_text_size"
             android:text="@{formattedValue}"
+            android:hint="@string/hint_rate_value"
             app:layout_constraintStart_toEndOf="@id/txtCurrencyName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

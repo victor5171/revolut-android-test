@@ -1,8 +1,6 @@
 package org.victor5171.revoluttest.rateconversion.ui
 
 import android.content.Context
-import android.icu.text.DecimalFormat
-import android.icu.text.NumberFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +13,7 @@ import javax.inject.Inject
 import kotlinx.android.synthetic.main.fragment_rates_conversion.*
 import org.victor5171.revoluttest.rateconversion.R
 import org.victor5171.revoluttest.rateconversion.di.FeatureRateConversionSubComponentContainer
+import org.victor5171.revoluttest.rateconversion.numberformatter.NumberFormatter
 import org.victor5171.revoluttest.rateconversion.ui.keylistener.KeyListenerBuilder
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 
@@ -27,16 +26,12 @@ class RatesConversionFragment : Fragment() {
     lateinit var keyListenerBuilder: KeyListenerBuilder
 
     @Inject
-    lateinit var numberFormat: NumberFormat
-
-    @Inject
-    lateinit var decimalFormat: DecimalFormat
+    lateinit var numberFormatter: NumberFormatter
 
     private val convertedRateAdapter by lazy {
         ConvertedRateAdapter(
             keyListenerBuilder,
-            numberFormat,
-            decimalFormat,
+            numberFormatter,
             this::rateOnFocus
         )
     }

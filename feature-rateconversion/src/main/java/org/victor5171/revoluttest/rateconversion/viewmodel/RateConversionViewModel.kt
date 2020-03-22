@@ -21,7 +21,7 @@ import org.victor5171.revoluttest.repository.rateconversion.RateConversionReposi
 
 private const val CURRENCY_UPDATE_RATE_IN_MILLISECONDS = 1000L
 private const val DEFAULT_BASE_CURRENCY = "EUR"
-private const val DEFAULT_STARTING_VALUE = 1.0
+private const val DEFAULT_STARTING_VALUE = 0.0
 
 class RateConversionViewModel @Inject constructor(
     private val locale: Locale,
