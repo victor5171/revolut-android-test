@@ -5,7 +5,7 @@ sealed class AdapterItem
 data class ConvertedRate(
     val currencyIdentifier: String,
     val currencyName: String,
-    val value: Double
+    val value: Double?
 ) : AdapterItem()
 
 object LoadingItem : AdapterItem()

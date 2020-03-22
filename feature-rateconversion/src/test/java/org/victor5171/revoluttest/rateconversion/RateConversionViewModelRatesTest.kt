@@ -63,7 +63,7 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0
+                    0.0
                 )
             ) && it.contains(LoadingItem)
         }
@@ -104,7 +104,7 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0
+                    0.0
                 )
             ) && it.contains(LoadingItem)
         }
@@ -117,14 +117,14 @@ class RateConversionViewModelRatesTest {
                     ConvertedRate(
                         baseCurrency,
                         "Euro",
-                        1.0
+                        0.0
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
                         "US Dollar",
-                        0.9
+                        0.0
                     )
                 )
         }
@@ -159,7 +159,7 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0
+                    0.0
                 )
             ) && it.contains(LoadingItem)
         }
@@ -199,7 +199,7 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0
+                    0.0
                 ),
                 LoadingItem
             ),
@@ -244,14 +244,14 @@ class RateConversionViewModelRatesTest {
                     ConvertedRate(
                         baseCurrency,
                         "Euro",
-                        1.0
+                        0.0
                     )
                 ) &&
                 it.contains(
                     ConvertedRate(
                         "USD",
                         "US Dollar",
-                        0.9
+                        0.0
                     )
                 )
         }
@@ -306,12 +306,12 @@ class RateConversionViewModelRatesTest {
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
-                    1.0
+                    0.0
                 ),
                 ConvertedRate(
                     "USD",
                     "US Dollar",
-                    0.9
+                    0.0
                 )
             ),
             listOf(

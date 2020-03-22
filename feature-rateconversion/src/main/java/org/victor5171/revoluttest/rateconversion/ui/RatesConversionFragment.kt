@@ -77,7 +77,7 @@ class RatesConversionFragment : Fragment() {
         })
     }
 
-    private fun rateOnFocus(currencyIdentifier: String, value: Double) {
+    private fun rateOnFocus(currencyIdentifier: String, value: Double?) {
         viewModel.convert(currencyIdentifier, value)
     }
 }

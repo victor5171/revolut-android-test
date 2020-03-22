@@ -12,7 +12,7 @@ class ConvertedRateViewHolder(
     private val listItemRateBinding: ListItemRateBinding,
     private val keyListenerBuilder: KeyListenerBuilder,
     private val numberFormatter: NumberFormatter,
-    private val onRateChanged: (currencyIdentifier: String, value: Double) -> Unit
+    private val onRateChanged: (currencyIdentifier: String, value: Double?) -> Unit
 ) : RecyclerView.ViewHolder(listItemRateBinding.root) {
 
     private val monetaryTextWatcher =
@@ -60,7 +60,9 @@ class ConvertedRateViewHolder(
         listItemRateBinding.currencyName = convertedRate.currencyName
 
         if (!txtValue.isFocused) {
-            listItemRateBinding.formattedValue = numberFormatter.formatFromDouble(convertedRate.value)
+            listItemRateBinding.formattedValue = convertedRate.value?.let {
+                numberFormatter.formatFromDouble(convertedRate.value)
+            } ?: ""
         }
 
         listItemRateBinding.executePendingBindings()

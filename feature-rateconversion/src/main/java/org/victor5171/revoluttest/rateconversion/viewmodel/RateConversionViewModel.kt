@@ -49,7 +49,7 @@ class RateConversionViewModel @Inject constructor(
         )
     }
 
-    fun convert(baseCurrency: String, value: Double) {
+    fun convert(baseCurrency: String, value: Double?) {
         ratesMediatorLiveData.removeSource(currentSource)
 
         currentSource = createCurrencyConversionSource(baseCurrency, value)
@@ -72,7 +72,7 @@ class RateConversionViewModel @Inject constructor(
 
     private fun convertCurrencyValue(value: Double, multiplier: Double) = value * multiplier
 
-    private fun createConvertedRate(currencyIdentifier: String, value: Double): ConvertedRate {
+    private fun createConvertedRate(currencyIdentifier: String, value: Double?): ConvertedRate {
         val currency = currencyCache[currencyIdentifier] ?: Currency.getInstance(currencyIdentifier)
         val currencyName = currency.getDisplayName(locale)
         return ConvertedRate(currencyIdentifier, currencyName, value)
@@ -80,16 +80,16 @@ class RateConversionViewModel @Inject constructor(
 
     private fun createCurrencyConversionSource(
         baseCurrency: String,
-        value: Double
+        value: Double?
     ): LiveData<List<AdapterItem>> {
         return rateConversionRepository.getRatesByAscOrdering(baseCurrency)
             .map { rates ->
                 val baseConvertedCurrency = createConvertedRate(baseCurrency, value)
 
-                val convertedRates = rates.map {
+                val convertedRates = rates.map { rate ->
                     createConvertedRate(
-                        it.destinationCurrency,
-                        convertCurrencyValue(value, it.multiplier)
+                        rate.destinationCurrency,
+                        value?.let { convertCurrencyValue(value, rate.multiplier) }
                     )
                 }
 

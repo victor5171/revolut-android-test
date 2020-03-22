@@ -18,7 +18,7 @@ private const val VIEW_TYPE_FOR_LOADING = 1
 class ConvertedRateAdapter(
     private val keyListenerBuilder: KeyListenerBuilder,
     private val numberFormatter: NumberFormatter,
-    private val onRateChanged: (currencyIdentifier: String, value: Double) -> Unit
+    private val onRateChanged: (currencyIdentifier: String, value: Double?) -> Unit
 ) : ListAdapter<AdapterItem, RecyclerView.ViewHolder>(DiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

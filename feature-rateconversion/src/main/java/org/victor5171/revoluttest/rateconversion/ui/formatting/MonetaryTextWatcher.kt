@@ -15,7 +15,7 @@ class MonetaryTextWatcher(
 
     private val diffMatchPatch = DiffMatchPatch()
 
-    var valueChanged: ((value: Double) -> Unit)? = null
+    var valueChanged: ((value: Double?) -> Unit)? = null
 
     private var isProcessing = false
     private lateinit var copiedTextBeforeChanges: CharSequence
@@ -26,6 +26,11 @@ class MonetaryTextWatcher(
         }
 
         if (newText == null) {
+            return
+        }
+
+        if (newText.isEmpty()) {
+            valueChanged?.invoke(null)
             return
         }
 
