@@ -6,7 +6,7 @@ import android.widget.EditText
 import java.text.DecimalFormat
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch
 
-private const val MAXIMUM_INTEGER_DIGITS = 10
+private const val MAXIMUM_INTEGER_DIGITS = 8
 
 class MonetaryTextWatcher(
     private val editText: EditText,

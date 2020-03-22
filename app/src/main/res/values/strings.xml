@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">RevolutTest</string>
+    <string name="app_name">Revolut Test</string>
+    <string name="rates_and_conversion_name">Rates &amp; conversions</string>
 </resources>

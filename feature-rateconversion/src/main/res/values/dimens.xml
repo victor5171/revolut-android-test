@@ -7,6 +7,7 @@
     <dimen name="currency_identifier_text_size">16sp</dimen>
     <dimen name="currency_name_text_size">13sp</dimen>
     <dimen name="value_edittext_text_size">20sp</dimen>
+    <dimen name="value_edittext_horizontal_margin">16dp</dimen>
     <dimen name="no_internet_icon_horizontal_padding">24dp</dimen>
     <dimen name="no_internet_text_vertical_padding">4dp</dimen>
     <dimen name="loading_size">64dp</dimen>

@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".app.MainActivity">
+            android:name=".app.MainActivity"
+            android:label="@string/rates_and_conversion_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

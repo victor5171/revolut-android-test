@@ -41,7 +41,7 @@
 
         <TextView
             android:id="@+id/txtCurrencyIdentifier"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/currency_icon_horizontal_margin"
             android:textColor="@color/currency_identifier_text_color"
@@ -50,12 +50,13 @@
             android:text="@{currencyIdentifier}"
             app:layout_constraintBottom_toTopOf="@id/txtCurrencyName"
             app:layout_constraintStart_toEndOf="@id/imgCurrencyIcon"
+            app:layout_constraintEnd_toStartOf="@id/txtValue"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="EUR" />
+            tools:text="AAAAAAAA" />
 
         <TextView
             android:id="@+id/txtCurrencyName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/currency_icon_horizontal_margin"
             android:textColor="@color/currency_name_text_color"
@@ -63,21 +64,23 @@
             android:text="@{currencyName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/imgCurrencyIcon"
+            app:layout_constraintEnd_toStartOf="@id/txtValue"
             app:layout_constraintTop_toBottomOf="@id/txtCurrencyIdentifier"
-            tools:text="Euro" />
+            tools:text="AAAAAAAAAAAAA" />
 
         <EditText
             android:id="@+id/txtValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/value_edittext_horizontal_margin"
             android:inputType="numberDecimal"
             android:textSize="@dimen/value_edittext_text_size"
-            android:textStyle="bold"
             android:text="@{formattedValue}"
+            app:layout_constraintStart_toEndOf="@id/txtCurrencyName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="9.999.999.999" />
+            tools:text="99999999.999.999.999" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
