@@ -3,5 +3,6 @@
     <string name="currency_icon_description">Currency icon</string>
     <string name="no_internet_title">No internet connection!</string>
     <string name="no_internet_message">Currently there\'s no internet connection, so the last downloaded rates are being used! Maybe they are outdated!</string>
+    <string name="loading_currencies">Loading other currencies …</string>
 
 </resources>

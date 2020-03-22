@@ -29,10 +29,10 @@ class RateConversionViewModel @Inject constructor(
     private val dispatchersContainer: DispatchersContainer
 ) : ViewModel() {
     // Create a empty MutableLiveData, just to avoid working with nullable values
-    private var currentSource: LiveData<List<ConvertedRate>> = MutableLiveData()
+    private var currentSource: LiveData<List<AdapterItem>> = MutableLiveData()
     private var currentBaseCurrency: String? = null
 
-    private val ratesMediatorLiveData = MediatorLiveData<List<ConvertedRate>>()
+    private val ratesMediatorLiveData = MediatorLiveData<List<AdapterItem>>()
     private val currencyCache = mutableMapOf<String, Currency>()
 
     private val mutableErrorLoadingData = MutableLiveData<Exception>()
@@ -40,7 +40,7 @@ class RateConversionViewModel @Inject constructor(
 
     private var ratesUpdateJob: Job? = null
 
-    val rates: LiveData<List<ConvertedRate>> = ratesMediatorLiveData
+    val rates: LiveData<List<AdapterItem>> = ratesMediatorLiveData
 
     init {
         convert(
@@ -81,7 +81,7 @@ class RateConversionViewModel @Inject constructor(
     private fun createCurrencyConversionSource(
         baseCurrency: String,
         value: Double
-    ): LiveData<List<ConvertedRate>> {
+    ): LiveData<List<AdapterItem>> {
         return rateConversionRepository.getRatesByAscOrdering(baseCurrency)
             .map { rates ->
                 val baseConvertedCurrency = createConvertedRate(baseCurrency, value)
@@ -93,7 +93,16 @@ class RateConversionViewModel @Inject constructor(
                     )
                 }
 
-                listOf(baseConvertedCurrency, *convertedRates.toTypedArray())
+                mutableListOf<AdapterItem>().apply {
+                    add(baseConvertedCurrency)
+
+                    if (convertedRates.isEmpty()) {
+                        add(LoadingItem)
+                        return@apply
+                    }
+
+                    addAll(convertedRates)
+                }
             }
             .asLiveData()
     }

@@ -10,5 +10,6 @@
     <dimen name="value_edittext_horizontal_margin">16dp</dimen>
     <dimen name="no_internet_icon_horizontal_padding">24dp</dimen>
     <dimen name="no_internet_text_vertical_padding">4dp</dimen>
-    <dimen name="loading_size">64dp</dimen>
+    <dimen name="loading_size">48dp</dimen>
+    <dimen name="loading_vertical_margin">12dp</dimen>
 </resources>

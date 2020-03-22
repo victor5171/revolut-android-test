@@ -25,6 +25,7 @@ import org.junit.Test
 import org.victor5171.revoluttest.TestDispatchersContainer
 import org.victor5171.revoluttest.UnconfinedTestDispatchersContainer
 import org.victor5171.revoluttest.rateconversion.viewmodel.ConvertedRate
+import org.victor5171.revoluttest.rateconversion.viewmodel.LoadingItem
 import org.victor5171.revoluttest.rateconversion.viewmodel.RateConversionViewModel
 import org.victor5171.revoluttest.repository.rateconversion.Rate
 import org.victor5171.revoluttest.repository.rateconversion.RateConversionRepository
@@ -42,7 +43,7 @@ class RateConversionViewModelRatesTest {
     }
 
     @Test
-    fun `When I open the view model and no destination currency is loaded, it should only return the base currency on the rates LiveData`() {
+    fun `When I open the view model and no destination currency is loaded, it should return the base currency and the loading on the rates LiveData`() {
         val baseCurrency = "EUR"
 
         val repository = mockk<RateConversionRepository> {
@@ -58,13 +59,13 @@ class RateConversionViewModelRatesTest {
             )
 
         viewModel.rates.test().assertValue {
-            it.size == 1 && it.contains(
+            it.size == 2 && it.contains(
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
                     1.0
                 )
-            )
+            ) && it.contains(LoadingItem)
         }
     }
 
@@ -99,13 +100,13 @@ class RateConversionViewModelRatesTest {
         val ratesTestObserver = viewModel.rates.test()
 
         ratesTestObserver.assertValue {
-            it.size == 1 && it.contains(
+            it.size == 2 && it.contains(
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
                     1.0
                 )
-            )
+            ) && it.contains(LoadingItem)
         }
 
         testCoroutineDispatcher.advanceTimeBy(5000L)
@@ -154,25 +155,25 @@ class RateConversionViewModelRatesTest {
         val ratesTestObserver = viewModel.rates.test()
 
         ratesTestObserver.assertValue {
-            it.size == 1 && it.contains(
+            it.size == 2 && it.contains(
                 ConvertedRate(
                     baseCurrency,
                     "Euro",
                     1.0
                 )
-            )
+            ) && it.contains(LoadingItem)
         }
 
         viewModel.convert(dolarCurrency, 1.0)
 
         ratesTestObserver.assertValue {
-            it.size == 1 && it.contains(
+            it.size == 2 && it.contains(
                 ConvertedRate(
                     dolarCurrency,
                     "US Dollar",
                     1.0
                 )
-            )
+            ) && it.contains(LoadingItem)
         }
 
         // This should be ignored, because the view model is observing another source since the base
@@ -183,13 +184,13 @@ class RateConversionViewModelRatesTest {
 
         // The LiveData should maintain the same value as before
         ratesTestObserver.assertValue {
-            it.size == 1 && it.contains(
+            it.size == 2 && it.contains(
                 ConvertedRate(
                     dolarCurrency,
                     "US Dollar",
                     1.0
                 )
-            )
+            ) && it.contains(LoadingItem)
         }
 
         // Asserting the history of values
@@ -199,14 +200,16 @@ class RateConversionViewModelRatesTest {
                     baseCurrency,
                     "Euro",
                     1.0
-                )
+                ),
+                LoadingItem
             ),
             listOf(
                 ConvertedRate(
                     dolarCurrency,
                     "US Dollar",
                     1.0
-                )
+                ),
+                LoadingItem
             )
         )
     }
