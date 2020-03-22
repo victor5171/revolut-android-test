@@ -1,18 +1,23 @@
 package org.victor5171.revoluttest.rateconversion.ui.keylistener
 
+import android.icu.text.DecimalFormat
 import android.text.method.DigitsKeyListener
 import android.text.method.KeyListener
 import javax.inject.Inject
-import org.victor5171.revoluttest.rateconversion.di.DecimalSeparator
 
-class NumberKeyListenerBuilder @Inject constructor(@DecimalSeparator decimalSeparator: Char?) : KeyListenerBuilder {
+class NumberKeyListenerBuilder @Inject constructor(decimalFormat: DecimalFormat) :
+    KeyListenerBuilder {
 
     private val keyListener: KeyListener
 
     init {
         val zeroToNine = (0..9).joinToString(separator = "") { it.toString() }
-        val digits = "$zeroToNine$decimalSeparator,"
-        keyListener = DigitsKeyListener.getInstance(digits)
+        val decimalFormatSymbols = decimalFormat.decimalFormatSymbols
+        with(decimalFormatSymbols) {
+            val digits =
+                "$zeroToNine$decimalSeparator${if (decimalFormat.isGroupingUsed) groupingSeparator else ""}"
+            keyListener = DigitsKeyListener.getInstance(digits)
+        }
     }
 
     override fun build(): KeyListener {

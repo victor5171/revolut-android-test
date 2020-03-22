@@ -1,15 +1,17 @@
 package org.victor5171.revoluttest.rateconversion.ui.formatting
 
+import android.icu.text.DecimalFormat
+import android.icu.text.NumberFormat
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import java.text.DecimalFormat
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch
 
 private const val MAXIMUM_INTEGER_DIGITS = 8
 
 class MonetaryTextWatcher(
     private val editText: EditText,
+    private val numberFormat: NumberFormat,
     private val decimalFormat: DecimalFormat
 ) : TextWatcher {
 
@@ -135,6 +137,7 @@ class MonetaryTextWatcher(
         isProcessing = false
     }
 
-    private fun convertToDouble(text: CharSequence) =
-        text.toString().filter { it != groupingSeparator }.toDoubleOrNull()
+    private fun convertToDouble(text: CharSequence) = runCatching {
+        numberFormat.parse(text.toString()).toDouble()
+    }.getOrNull()
 }

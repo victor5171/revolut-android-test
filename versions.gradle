@@ -1,7 +1,7 @@
 ext {
     //Project configuration
     compileSdkVersion = 29
-    minSdkVersion = 22
+    minSdkVersion = 24
     targetSdkVersion = 29
     buildToolsVersion = "29.0.3"
     gradleVersion = "3.6.1"
