@@ -39,3 +39,6 @@ The app uses a **MVVM** layered architecture with the use of modules and separat
 - The API base URL is configured on the **BuildConfig** from the app. You can change it by editing **app/build.gradle** file;
 - The versions are declared in a single gradle file, you can check them on **versions.gradle**;
 - JAXB has to be included optionally because it's removed from the Java framework starting from Java9.
+- Icons licenses:
+	- Country flags: "Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](http://www.flaticon.com/)"
+	- Question mark icon: "Icon made by [Pixel perfect](https://www.flaticon.com/authors/pixel-perfect) from [www.flaticon.com](http://www.flaticon.com/)"
