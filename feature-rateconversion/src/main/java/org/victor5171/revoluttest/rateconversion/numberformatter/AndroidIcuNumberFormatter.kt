@@ -2,6 +2,7 @@ package org.victor5171.revoluttest.rateconversion.numberformatter
 
 import android.icu.text.DecimalFormat
 import android.icu.text.NumberFormat
+import java.math.RoundingMode
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.min
@@ -21,6 +22,7 @@ class AndroidIcuNumberFormatter @Inject constructor(
         numberFormatWithFraction.maximumFractionDigits = MAXIMUM_NUMBER_OF_FRACTION_DIGITS
 
         numberFormatWithoutFraction.maximumFractionDigits = 0
+        numberFormatWithoutFraction.roundingMode = RoundingMode.DOWN.ordinal
 
         decimalFormat.decimalFormatSymbols.apply {
             currencySymbol = ""
@@ -37,6 +39,7 @@ class AndroidIcuNumberFormatter @Inject constructor(
 
     override fun formatFromUnformattedString(unformattedCharSequence: CharSequence): String {
         val unformattedString = unformattedCharSequence.toString()
+
         val parsedValue = numberFormatWithoutFraction.parse(unformattedString)
 
         val integerPart = numberFormatWithoutFraction.format(parsedValue)
@@ -46,6 +49,7 @@ class AndroidIcuNumberFormatter @Inject constructor(
             val fractionSubstringAndWithoutSeparators =
                 unformattedString.substring(indexOfDecimalSeparator + 1, unformattedString.length)
                     .replace(decimalSeparator.toString(), "")
+                    .replace(groupingSeparator.toString(), "")
             val endIndex = min(fractionSubstringAndWithoutSeparators.length, MAXIMUM_NUMBER_OF_FRACTION_DIGITS)
             val reducedFractionSubstring =
                 fractionSubstringAndWithoutSeparators.substring(0, endIndex)

@@ -75,8 +75,15 @@ class MonetaryTextWatcher(
             return
         }
 
+        // Auto-settings 0 with everything before the decimal separator is erased
         if (newTextLength == 1 && newText[0] == numberFormatter.decimalSeparator) {
             editText.text.replace(0, 0, "0")
+            return
+        }
+
+        // Disabling the ability to add grouping separator by its own, it should be added automatically by the formatter
+        if (lengthToBeAdded == 1 && newText[startIndex] == numberFormatter.groupingSeparator) {
+            editText.text.delete(startIndex, startIndex + 1)
             return
         }
 
